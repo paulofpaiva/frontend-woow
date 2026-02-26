@@ -24,3 +24,17 @@ export interface LoginResponse {
 export interface ApiError {
   message: string;
 }
+
+export interface ListUsersParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  role?: "user" | "admin";
+}
+
+export interface ListUsersResponse {
+  users: User[];
+  total: number;
+  page: number;
+  limit: number;
+}
