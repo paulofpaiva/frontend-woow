@@ -19,7 +19,7 @@ export function useLogin() {
     try {
       const res = await login({ email: data.email.trim(), password: data.password });
       setAuth(res.token, res.user);
-      navigate("/profile", { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       const message =
         axios.isAxiosError(err) && typeof err.response?.data?.message === "string"

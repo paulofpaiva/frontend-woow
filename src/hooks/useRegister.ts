@@ -32,7 +32,7 @@ export function useRegister() {
         password: data.password,
       });
       setAuth(res.token, res.user);
-      navigate("/profile", { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       const message =
         axios.isAxiosError(err) && typeof err.response?.data?.message === "string"
