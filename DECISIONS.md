@@ -24,22 +24,28 @@ Este documento resume las decisiones técnicas del proyecto frontend, los proble
 
 ## Mejoras con más tiempo
 
-**Página de registro.** Formulario de alta de usuarios que llame a `POST /api/auth/register` y redirija a login.
-
-**Dashboard de administrador.** Ruta solo para `role === 'admin'`; listado de usuarios con `GET /api/users`, paginación y filtros (search, role) usando TanStack Query.
-
-**Tests unitarios.** Vitest o Jest con React Testing Library para componentes críticos (Login, Perfil) y contexto de auth con mocks del API.
-
 **Refresh token.** Si el backend añade refresh token, almacenarlo de forma segura y renovar el access token antes de que expire.
 
 **Variables de entorno validadas.** Comprobar al arranque que `VITE_API_URL` exista y sea una URL válida para evitar errores confusos en runtime.
 
 ## Integración con el backend
 
-El frontend asume que el backend expone:
+El frontend consume los siguientes endpoints del backend. Todos los que requieren autenticación usan el header `Authorization: Bearer <token>` (o cookie cuando `withCredentials: true`).
 
-- `POST /api/auth/login` → `{ token, user }`
-- `GET /api/users/me` → perfil del usuario (con header `Authorization: Bearer <token>`)
-- `PUT /api/users/me` → actualización de nombre (body `{ name }`)
+**Health**
 
-El backend debe configurar CORS para permitir el origen del frontend en desarrollo (por ejemplo `http://localhost:5173`).
+- `GET /api/health` — Estado del servicio y de la base de datos. No requiere autenticación.
+
+**Auth**
+
+- `POST /api/auth/register` — Registro de usuarios. Body: `{ name, email, password }`. Respuesta 201: `{ message }`.
+- `POST /api/auth/login` — Login. Body: `{ email, password }`. Respuesta 200: `{ token, user }`. El backend puede enviar además el token en cookie httpOnly.
+- `POST /api/auth/logout` — Cerrar sesión (limpia la cookie de sesión en el servidor). Respuesta 200: `{ message }`.
+
+**Usuarios**
+
+- `GET /api/users/me` — Perfil del usuario autenticado. Respuesta 200: `{ id, name, email, role }`.
+- `PUT /api/users/me` — Actualizar perfil (solo nombre). Body: `{ name }`. Respuesta 200: `{ message, user }`.
+- `GET /api/users` — Listado de usuarios (solo admin). Query opcionales: `page`, `limit`, `search`, `role`. Respuesta 200: `{ users, pagination }`.
+
+El backend debe configurar CORS con `origin` explícito (por ejemplo `http://localhost:5173`) y `credentials: true` para que login/logout con cookie funcionen desde el frontend.
