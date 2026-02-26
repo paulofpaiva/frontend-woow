@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/table";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUsersSearch, type UsersSearchRole } from "@/hooks/useUsersSearch";
+import type { User } from "@/types/auth";
 import type { AuthenticatedLayoutContext } from "@/layouts/AuthenticatedLayout";
 
 const PAGE_TITLE = "Usuarios";
@@ -135,7 +136,7 @@ export function UsersPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {result.users.map((u) => (
+                {result.users.map((u: User) => (
                   <TableRow key={u.id}>
                     <TableCell className="px-4 py-3">{u.name}</TableCell>
                     <TableCell className="px-4 py-3 text-muted-foreground">
