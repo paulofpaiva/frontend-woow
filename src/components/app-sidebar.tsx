@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, User } from "lucide-react"
+import { Home, Search, User } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 import woowLogo from "@/assets/woow_logo.jpeg"
 import { NavUser } from "@/components/nav-user"
@@ -27,6 +27,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation()
   const isDashboardActive = location.pathname === "/dashboard"
   const isProfileActive = location.pathname === "/profile"
+  const isSearchUsersActive = location.pathname === "/users"
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -63,6 +64,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <Link to="/profile">
                   <User />
                   <span>Perfil</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={isSearchUsersActive} tooltip="Buscar usuarios">
+                <Link to="/users">
+                  <Search />
+                  <span>Buscar usuarios</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
