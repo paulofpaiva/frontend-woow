@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Empty,
   EmptyDescription,
@@ -26,6 +27,11 @@ import type { User } from "@/types/auth";
 import type { AuthenticatedLayoutContext } from "@/layouts/AuthenticatedLayout";
 
 const PAGE_TITLE = "Usuarios";
+
+function getUserInitial(user: User): string {
+  const base = user.name?.trim() || user.email?.trim() || "?";
+  return base.charAt(0).toUpperCase();
+}
 
 export function UsersPage() {
   const { setPageTitle } = useOutletContext<AuthenticatedLayoutContext>();
@@ -138,7 +144,16 @@ export function UsersPage() {
               <TableBody>
                 {result.users.map((u: User) => (
                   <TableRow key={u.id}>
-                    <TableCell className="px-4 py-3">{u.name}</TableCell>
+                    <TableCell className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <Avatar size="sm">
+                          <AvatarFallback>
+                            {getUserInitial(u)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span>{u.name}</span>
+                      </div>
+                    </TableCell>
                     <TableCell className="px-4 py-3 text-muted-foreground">
                       {u.email}
                     </TableCell>
