@@ -1,16 +1,24 @@
-import { useAuthStore } from "@/stores/auth.store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useProfile } from "@/hooks/useProfile";
 import { useLogout } from "@/hooks/useLogout";
 
 export function ProfilePage() {
-  const user = useAuthStore((s) => s.user);
+  const { data: user, isLoading, isError, errorMessage } = useProfile();
   const { logout } = useLogout();
 
-  if (!user) {
+  if (isLoading) {
     return (
       <main className="p-6">
-        <p className="text-muted-foreground">No hay datos de sesión.</p>
+        <p className="text-muted-foreground">Cargando perfil…</p>
+      </main>
+    );
+  }
+
+  if (isError || !user) {
+    return (
+      <main className="p-6">
+        <p className="text-destructive">{errorMessage ?? "Error al cargar el perfil"}</p>
       </main>
     );
   }
