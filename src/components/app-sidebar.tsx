@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, Search, User } from "lucide-react"
+import { Home, User, Users } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 import woowLogo from "@/assets/woow_logo.jpeg"
 import { NavUser } from "@/components/nav-user"
@@ -68,10 +68,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={isSearchUsersActive} tooltip="Buscar usuarios">
+              <SidebarMenuButton asChild isActive={isSearchUsersActive} tooltip="Usuarios">
                 <Link to="/users">
-                  <Search />
-                  <span>Buscar usuarios</span>
+                  <Users />
+                  <span>Usuarios</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
