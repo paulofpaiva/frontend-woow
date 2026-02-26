@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRegister } from "@/hooks/useRegister";
+import woowLogo from "@/assets/woow_logo.jpeg";
 
 export function RegisterPage() {
   const { form, onSubmit } = useRegister();
@@ -18,7 +19,12 @@ export function RegisterPage() {
 
   return (
     <Card className="w-full max-w-md">
-      <CardHeader>
+      <CardHeader className="flex flex-col items-center gap-4">
+        <img
+          src={woowLogo}
+          alt="Woow Technology"
+          className="h-16 w-auto object-contain"
+        />
         <CardTitle>Registrarse</CardTitle>
       </CardHeader>
       <CardContent>
