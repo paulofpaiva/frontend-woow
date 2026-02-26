@@ -6,6 +6,10 @@ export async function login(credentials: LoginCredentials): Promise<LoginRespons
   return data;
 }
 
+export async function logout(): Promise<void> {
+  await api.post("/api/auth/logout");
+}
+
 export async function getMe(): Promise<User> {
   const { data } = await api.get<User>("/api/users/me");
   return data;

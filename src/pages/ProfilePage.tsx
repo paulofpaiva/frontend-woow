@@ -1,8 +1,11 @@
 import { useAuthStore } from "@/stores/auth.store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useLogout } from "@/hooks/useLogout";
 
 export function ProfilePage() {
   const user = useAuthStore((s) => s.user);
+  const { logout } = useLogout();
 
   if (!user) {
     return (
@@ -18,7 +21,7 @@ export function ProfilePage() {
         <CardHeader>
           <CardTitle>Dashboard</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <dl className="grid gap-3">
             <div className="grid grid-cols-[120px_1fr] gap-2">
               <dt className="text-muted-foreground text-sm">Nombre</dt>
@@ -33,6 +36,9 @@ export function ProfilePage() {
               <dd className="text-sm">{user.role}</dd>
             </div>
           </dl>
+          <Button variant="outline" type="button" onClick={() => void logout()}>
+            Cerrar sesión
+          </Button>
         </CardContent>
       </Card>
     </main>
