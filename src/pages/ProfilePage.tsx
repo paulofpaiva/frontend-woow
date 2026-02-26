@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Mail, Pencil, Shield } from "lucide-react";
+import { LogOut, Mail, Pencil, Shield } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -99,6 +99,7 @@ export function ProfilePage() {
             type="button"
             onClick={() => void logout()}
           >
+            <LogOut className="size-4" />
             Cerrar sesión
           </Button>
         </CardContent>
