@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import { type ReactNode, useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../stores/auth.store";
@@ -19,8 +20,13 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (!isHydrated) {
     return (
-      <div className="protected-route-loading" role="status" aria-label="Cargando">
-        Cargando…
+      <div
+        className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-white"
+        role="status"
+        aria-label="Cargando"
+      >
+        <Loader2 className="size-10 animate-spin text-muted-foreground" aria-hidden />
+        <p className="text-muted-foreground text-sm">Cargando…</p>
       </div>
     );
   }
