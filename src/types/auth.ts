@@ -34,7 +34,10 @@ export interface ListUsersParams {
 
 export interface ListUsersResponse {
   users: User[];
-  total: number;
-  page: number;
-  limit: number;
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
 }

@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/table";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUsersSearch, type UsersSearchRole } from "@/hooks/useUsersSearch";
+import type { User } from "@/types/auth";
 import type { AuthenticatedLayoutContext } from "@/layouts/AuthenticatedLayout";
 
 const PAGE_TITLE = "Usuarios";
@@ -121,8 +122,8 @@ export function UsersPage() {
         <Card>
           <CardHeader>
             <CardTitle>
-              Resultados ({result.total}{" "}
-              {result.total === 1 ? "usuario" : "usuarios"})
+              Resultados ({result.pagination.total}{" "}
+              {result.pagination.total === 1 ? "usuario" : "usuarios"})
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
@@ -135,7 +136,7 @@ export function UsersPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {result.users.map((u) => (
+                {result.users.map((u: User) => (
                   <TableRow key={u.id}>
                     <TableCell className="px-4 py-3">{u.name}</TableCell>
                     <TableCell className="px-4 py-3 text-muted-foreground">
@@ -148,33 +149,31 @@ export function UsersPage() {
                 ))}
               </TableBody>
             </Table>
-            {totalPages > 1 && (
-              <div className="flex items-center justify-between gap-4 border-t px-4 py-3">
-                <p className="text-muted-foreground text-sm">
-                  Página {page} de {totalPages}
-                </p>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handlePageChange(page - 1)}
-                    disabled={page <= 1 || loading}
-                  >
-                    <ChevronLeft className="size-4" />
-                    Anterior
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handlePageChange(page + 1)}
-                    disabled={page >= totalPages || loading}
-                  >
-                    Siguiente
-                    <ChevronRight className="size-4" />
-                  </Button>
-                </div>
+            <div className="flex items-center justify-between gap-4 border-t px-4 py-3">
+              <p className="text-muted-foreground text-sm">
+                Página {page} de {totalPages || 1}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page <= 1 || loading}
+                >
+                  <ChevronLeft className="size-4" />
+                  Anterior
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page >= (totalPages || 1) || loading}
+                >
+                  Siguiente
+                  <ChevronRight className="size-4" />
+                </Button>
               </div>
-            )}
+            </div>
           </CardContent>
         </Card>
       )}

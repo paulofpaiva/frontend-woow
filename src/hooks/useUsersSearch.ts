@@ -56,14 +56,14 @@ export function useUsersSearch(isAdmin: boolean) {
         : null;
 
   const result = query.data ?? null;
-  const totalPages = result ? Math.ceil(result.total / result.limit) : 0;
+  const totalPages = result?.pagination?.totalPages ?? 0;
 
   return {
     search,
     setSearch,
     role,
     setRole,
-    page,
+    page: result?.pagination?.page ?? page,
     loading: query.isFetching,
     error: query.isError ? errorMessage : null,
     result,
