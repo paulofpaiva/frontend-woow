@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { listUsers } from "@/services/users.service";
 
@@ -8,13 +8,50 @@ const LIMIT = 10;
 
 export type UsersSearchRole = "" | "user" | "admin";
 
-export function useUsersSearch(isAdmin: boolean) {
-  const [search, setSearch] = useState("");
-  const [role, setRole] = useState<UsersSearchRole>("");
-  const [page, setPage] = useState(1);
+type UsersSearchState = {
+  search: string;
+  role: UsersSearchRole;
+  page: number;
+  hasSearched: boolean;
+};
+
+type UsersSearchOptions = {
+  initialSearch?: string;
+  initialRole?: UsersSearchRole;
+  initialPage?: number;
+  onStateChange?: (state: UsersSearchState) => void;
+};
+
+export function useUsersSearch(isAdmin: boolean, options?: UsersSearchOptions) {
+  const {
+    initialSearch = "",
+    initialRole = "",
+    initialPage = 1,
+    onStateChange,
+  } = options ?? {};
+
+  const [search, setSearch] = useState(initialSearch);
+  const [role, setRole] = useState<UsersSearchRole>(initialRole);
+  const [page, setPage] = useState(initialPage);
   const [submittedSearch, setSubmittedSearch] = useState<string | null>(null);
   const [submittedRole, setSubmittedRole] = useState<UsersSearchRole | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    if (hasSearched) return;
+    const hasInitialFilters =
+      Boolean(initialSearch?.trim()) ||
+      Boolean(initialRole) ||
+      (typeof initialPage === "number" && initialPage > 1);
+
+    if (!hasInitialFilters) return;
+
+    setSubmittedSearch(initialSearch);
+    setSubmittedRole(initialRole);
+    setPage(initialPage);
+    setHasSearched(true);
+  }, [isAdmin, hasSearched, initialSearch, initialRole, initialPage]);
 
   const query = useQuery({
     queryKey: [USERS_QUERY_KEY, page, submittedSearch, submittedRole],
@@ -36,16 +73,29 @@ export function useUsersSearch(isAdmin: boolean) {
       setSubmittedRole(role);
       setPage(1);
       setHasSearched(true);
+      onStateChange?.({
+        search,
+        role,
+        page: 1,
+        hasSearched: true,
+      });
     },
-    [isAdmin, search, role]
+    [isAdmin, search, role, onStateChange]
   );
 
   const handlePageChange = useCallback(
     (newPage: number) => {
       if (!isAdmin) return;
       setPage(newPage);
+      setHasSearched(true);
+      onStateChange?.({
+        search,
+        role,
+        page: newPage,
+        hasSearched: true,
+      });
     },
-    [isAdmin]
+    [isAdmin, onStateChange, role, search]
   );
 
   const errorMessage =

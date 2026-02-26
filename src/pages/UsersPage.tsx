@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { ChevronLeft, ChevronRight, ShieldX } from "lucide-react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,8 +35,20 @@ function getUserInitial(user: User): string {
 
 export function UsersPage() {
   const { setPageTitle } = useOutletContext<AuthenticatedLayoutContext>();
+  const [searchParams, setSearchParams] = useSearchParams();
   const user = useAuthStore((s) => s.user);
   const isAdmin = user?.role === "admin";
+
+  const initialSearch = searchParams.get("search") ?? "";
+  const initialRoleParam = searchParams.get("role") ?? "";
+  const initialRole: UsersSearchRole =
+    initialRoleParam === "user" || initialRoleParam === "admin"
+      ? (initialRoleParam as UsersSearchRole)
+      : "";
+
+  const initialPageParam = searchParams.get("page");
+  const initialPageNumber = initialPageParam ? Number(initialPageParam) : 1;
+  const initialPage = Number.isFinite(initialPageNumber) && initialPageNumber > 0 ? initialPageNumber : 1;
 
   const {
     search,
@@ -50,7 +62,25 @@ export function UsersPage() {
     totalPages,
     handleSubmit,
     handlePageChange,
-  } = useUsersSearch(isAdmin);
+  } = useUsersSearch(isAdmin, {
+    initialSearch,
+    initialRole,
+    initialPage,
+    onStateChange: ({ search, role, page, hasSearched }) => {
+      if (!hasSearched) return;
+      const nextParams = new URLSearchParams();
+      if (search.trim()) {
+        nextParams.set("search", search.trim());
+      }
+      if (role) {
+        nextParams.set("role", role);
+      }
+      if (page > 1) {
+        nextParams.set("page", String(page));
+      }
+      setSearchParams(nextParams, { replace: true });
+    },
+  });
 
   useEffect(() => {
     setPageTitle(PAGE_TITLE);
