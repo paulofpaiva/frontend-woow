@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AuthenticatedLayout } from "./layouts/AuthenticatedLayout";
 import { LoginPage } from "./pages/LoginPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProfilePage } from "./pages/ProfilePage";
@@ -13,14 +14,16 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route
-          path="/profile"
+          path="/"
           element={
             <ProtectedRoute>
-              <ProfilePage />
+              <AuthenticatedLayout />
             </ProtectedRoute>
           }
-        />
-        <Route path="/" element={<Navigate to="/profile" replace />} />
+        >
+          <Route index element={<Navigate to="/profile" replace />} />
+          <Route path="profile" element={<ProfilePage />} />
+        </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
