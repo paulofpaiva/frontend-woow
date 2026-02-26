@@ -10,6 +10,8 @@ Este documento resume las decisiones técnicas del proyecto frontend, los proble
 
 **TypeScript.** Tipado estático en todo el código; configuración strict. Tipos para respuestas de API, estado del contexto y props de componentes. Sin uso de `any`.
 
+**Zustand (en lugar de Context API para auth).** La prueba sugiere `contexts/` con Context API para el estado de autenticación. Se eligió Zustand porque: (1) evita re-renders en cascada — solo los componentes que suscriben a `token` o `user` se actualizan, no todo el árbol bajo un AuthProvider; (2) el estado se puede leer fuera de componentes (por ejemplo en el cliente Axios o en guards) sin pasar props; (3) el middleware `persist` guarda token y user en localStorage con muy poco código; (4) testing más simple — no hace falta envolver con providers en cada test. La estructura del proyecto usa `stores/` en lugar de `contexts/` por esta decisión.
+
 **React Router.** Navegación entre Login y Perfil; rutas protegidas que redirigen a login si no hay token. Estructura simple (rutas públicas y privadas).
 
 **TanStack Query (React Query).** Gestión de estado asíncrono y caché para las llamadas al backend. Evita estado manual de loading/error en cada página y unifica reintentos e invalidación. Las mutaciones (login, actualizar perfil) se integran con el cliente y el contexto de auth.

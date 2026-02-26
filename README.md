@@ -34,6 +34,10 @@ cp .env.example .env
 
 En `.env` debes definir `VITE_API_URL` con la URL base del backend (por ejemplo `http://localhost:3000`). El backend debe permitir CORS desde el origen del frontend en desarrollo (por ejemplo `http://localhost:5173`).
 
+## Cómo crear la base de datos
+
+La base de datos se crea y migra al ejecutar el backend. Consulta el repositorio [backend-woow](https://github.com/WoowTechnology/backend-woow) para prerrequisitos (PostgreSQL), variables de entorno y comandos (`drizzle-kit push`, `drizzle-kit migrate` o equivalentes). Este frontend solo consume la API; no crea tablas ni datos.
+
 ## Cómo ejecutar el proyecto
 
 **Modo desarrollo** (recarga al guardar):
@@ -65,13 +69,34 @@ src/
 
 ## Credenciales de prueba
 
-Para probar el login usa el usuario administrador creado por el backend (tras ejecutar las migraciones):
+Tras ejecutar las migraciones y seeds del backend, puedes usar:
+
+**Usuario administrador** (seed inicial del backend):
 
 * Email: `admin@gmail.com`
 * Contraseña: `12345678`
 * Rol: `admin`
 
-Para probar como usuario normal, regístrate desde el backend (`POST /api/auth/register`) con otro email y luego inicia sesión desde el frontend.
+**Usuario normal** (seed de 50 usuarios; contraseña común `12345678`):
+
+* Email: `maria.garcia@seed.local`
+* Contraseña: `12345678`
+* Rol: `user`
+
+Otros usuarios del mismo seed: `juan.perez@seed.local`, `carlos.lopez@seed.local`, etc. Ver en el backend el archivo de seed (p. ej. `drizzle/0002_seed_50_users.sql`) para la lista completa.
+
+## Endpoints consumidos por el frontend
+
+El frontend consume la API REST del backend. Resumen (detalles y ejemplos en [DECISIONS.md](DECISIONS.md)):
+
+| Método | Ruta | Uso |
+|--------|------|-----|
+| `POST` | `/api/auth/register` | Registro (nombre, email, contraseña) |
+| `POST` | `/api/auth/login` | Login; respuesta: `token` y `user` |
+| `POST` | `/api/auth/logout` | Cerrar sesión |
+| `GET`  | `/api/users/me` | Perfil del usuario autenticado |
+| `PUT`  | `/api/users/me` | Actualizar perfil (nombre) |
+| `GET`  | `/api/users` | Listado de usuarios (solo admin; paginación y filtros) |
 
 ## Scripts npm
 
