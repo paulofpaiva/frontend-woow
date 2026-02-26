@@ -17,8 +17,9 @@ export function ProfilePage() {
 
   useEffect(() => {
     setPageTitle(PAGE_TITLE);
-    return () => setPageTitle("Inicio");
+    return () => setPageTitle("Dashboard");
   }, [setPageTitle]);
+
   const { data: user, isLoading, isError, errorMessage } = useProfile();
   const { logout } = useLogout();
 

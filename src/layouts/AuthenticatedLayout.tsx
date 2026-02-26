@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 
-const DEFAULT_PAGE_TITLE = "Inicio";
+const DEFAULT_PAGE_TITLE = "Dashboard";
 
 export type AuthenticatedLayoutContext = {
   setPageTitle: (title: string) => void;
