@@ -58,7 +58,7 @@ src/
 ├── components/   # Componentes reutilizables (UI)
 ├── pages/        # Páginas (Login, Perfil, etc.)
 ├── services/     # Llamadas a la API
-├── contexts/     # Context API (auth)
+├── stores/       # Zustand (sesión/auth: token, user, persist)
 ├── types/        # Interfaces TypeScript
 └── App.tsx       # Entry point, rutas y providers
 ```
