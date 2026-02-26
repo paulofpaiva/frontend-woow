@@ -29,3 +29,10 @@ export async function getMe(): Promise<User> {
   const { data } = await api.get<User>("/api/users/me");
   return data;
 }
+
+export async function updateProfile(name: string): Promise<{ message: string; user: User }> {
+  const { data } = await api.put<{ message: string; user: User }>("/api/users/me", {
+    name,
+  });
+  return data;
+}
