@@ -4,7 +4,7 @@
 
 Este repositorio corresponde al frontend del assignment técnico solicitado por [WoowTechnology SAS](https://woowtechnologysas.com/) como parte del proceso de selección para la vacante de desarrollador de software.
 
-Aplicación React para autenticación y perfil de usuario. Consume la API REST del proyecto [backend-woow](https://github.com/WoowTechnology/backend-woow) (login, perfil, listado de usuarios para admin).
+Aplicación React para autenticación y perfil de usuario. Consume la API REST del proyecto [backend-woow](https://github.com/paulofpaiva/backend-woow) (login, perfil, listado de usuarios para admin).
 
 ## Descripción del proyecto
 
@@ -36,7 +36,7 @@ En `.env` debes definir `VITE_API_URL` con la URL base del backend (por ejemplo 
 
 ## Cómo crear la base de datos
 
-La base de datos se crea y migra al ejecutar el backend. Consulta el repositorio [backend-woow](https://github.com/WoowTechnology/backend-woow) para prerrequisitos (PostgreSQL), variables de entorno y comandos (`drizzle-kit push`, `drizzle-kit migrate` o equivalentes). Este frontend solo consume la API; no crea tablas ni datos.
+La base de datos se crea y migra al ejecutar el backend. Consulta el repositorio [backend-woow](https://github.com/paulofpaiva/backend-woow) para prerrequisitos (PostgreSQL), variables de entorno y comandos (`drizzle-kit push`, `drizzle-kit migrate` o equivalentes). Este frontend solo consume la API; no crea tablas ni datos.
 
 ## Cómo ejecutar el proyecto
 
