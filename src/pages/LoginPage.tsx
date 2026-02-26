@@ -16,8 +16,7 @@ export function LoginPage() {
   const rootError = form.formState.errors.root?.message;
 
   return (
-    <main className="flex min-h-[60vh] items-center justify-center p-6">
-      <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Iniciar sesión</CardTitle>
         </CardHeader>
@@ -78,6 +77,5 @@ export function LoginPage() {
           </Form>
         </CardContent>
       </Card>
-    </main>
   );
 }
